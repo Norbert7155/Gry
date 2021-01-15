@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            *{
+                padding: 0px;
+                margin: 0px;
+            }
+            #game{
+                width: 300px;
+                height: 500px;
+                border: 1px solid black;
+                margin: auto;
+            }
+            #character{
+                width:100px ;
+                height: 100px;
+                background-color: red;
+                position: relative;
+                top: 300px;
+                left: 0px;
+            }
+
+            #block{
+                width: 100px;
+                height: 100px;
+                top: 500px;
+                background-color: black;
+                position: relative;
+                animation: example 1s infinite linear;
+            }
+            @keyframes example{
+                0%{top:-100px};
+                1000%{top:500px};
+            }
+            #white{
+                width: 300px;
+                height: 110px;
+                position: absolute;
+                top: 502px;
+                background-color:white ;
+                z-index: 100000;
+            }
+            #left #right{
+                width: 50%;
+                position: absolute;
+                height: 500px;
+            }
+            #right{
+                left:50%;
+            }
+            #left{
+                left:0px
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="game">
+            <div id="left"></div>
+            <dic id="right"></dic>
+
+            <div id="block"></div>
+            <div id="character"></div>
+            <div id="white"></div>
+
+
+        </div>
+        <script>
+            function moveLeft() {
+    let left = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
+    left -=100;
+    if(left>=0) {
+        character.style.left = left + "px";
+            }
+}
+function moveRight() {
+    let left = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
+    left += 100;
+    if(left<300) {
+    character.style.left = left + "px";
+        }
+}
+
+document.addEventListener("keydown", event => {
+    if(event.key=="ArrowLeft") {moveLeft();}
+    
+     else if(event.key=="ArrowRight") {moveRight();}
+});
+var block = document.querySelector('#block');
+var score = 0;
+block.addEventListener('animationiteration', () => {
+    var radnom = Math.floor(Math.random()*3);
+    left = radnom * 100;
+    block.style.left = left + "px";
+    score ++;
+
+});
+setInterval(function(){
+    var characterleft = parseInt(window.getComputedStyle(character).getPropertyValue("left"));
+
+    var blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue("left"));
+
+    var blockTop = parseInt(window.getComputedStyle(block).getPropertyValue("top"));
+
+    if(characterleft == blockLeft && blockTop < 500 && blockTop > 300) {
+        alert("game Over. Score:"+score);
+        block.style.animation = "none";
+    }
+    
+},1);
+
+document.getElementById("right").addEventListener("touchstart", moveRight);
+document.getElementById("left").addEventListener("touchstart", moveLeft);
+        </script>
+    </body>
+</html>
